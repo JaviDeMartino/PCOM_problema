@@ -19,7 +19,6 @@ struct tNenufar {
 	int id;
 	double x, y;
 	int moscas;
-	bool esFragil = false;
 };
 
 using vN = vector<tNenufar>;
@@ -87,7 +86,6 @@ void resuelveCaso() {
 		cin >> n1.x >> n1.y >> n1.moscas;
 
 		// el primer nenúfar siempre es el frágil
-		n1.esFragil = i == ID_FRAGIL;
 		nenufares.push_back(n1);
 		
 		uf.setMoscas(i, n1.moscas);

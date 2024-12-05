@@ -19,7 +19,6 @@ struct tNenufar {
 	int id;
 	double x, y;
 	int moscas;
-	bool esFragil = false;
 };
 
 // estados de los nenúfares en la búsqueda
@@ -106,7 +105,6 @@ void resuelveCaso() {
 		cin >> n1.x >> n1.y >> n1.moscas;
 
 		// el primer nenúfar siempre es el frágil
-		n1.esFragil = i == ID_FRAGIL;
 		nenufares.push_back(n1);
 		
 		if (n1.x <= l || n - n1.x <= l || n1.y <= l || m - n1.y <= l) {
