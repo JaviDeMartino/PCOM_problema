@@ -1,15 +1,19 @@
 // JAVIER MARTÍN FUENTES - ANTONINO SASU
 // jmarti32@ucm.es - antosasu@ucm.es
 
-// LA RANITA Y LOS NENÚFARES
+//
+//  LA RANITA Y LOS NENÚFARES
+//  - Solución mediante DFS
+//  
 
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <unordered_set>
+#include <cmath>
 using namespace std;
 
-const int ID_FRAGIL = 0;   // ID del nenúfar frágil
+const int ID_FRAGIL = 0;	// ID del nenúfar frágil
 
 struct tNenufar {
 	int id;
@@ -36,25 +40,20 @@ int dfs(int s, int lastNodo) {
 	int numMoscas = 0;
 	tEstado lastEstado = estados[lastNodo];
 	
-   // Si el nodo actual es el frágil
 	if (s == ID_FRAGIL) {
 		estados[s] = NO_ACCESIBLE;
-      // Se suman las moscas porque se puede entrar en el nodo y salir
 		numMoscas += nenufares[s].moscas;
 	}
-   // Si el nodo anterior era el frágil
 	else if (lastNodo == ID_FRAGIL) {
 		noAccesibles = {};
 		estados[s] = NO_ACCESIBLE;
 		noAccesibles.insert(s);
 	}
-   // Si el último nodo es accesible
 	else if (lastEstado == ACCESIBLE) {
 		estados[s] = ACCESIBLE;
 		if (lastNodo != -1)
 			numMoscas += nenufares[s].moscas;
 	}
-   // Si el último nodo no es accesible
 	else if (lastEstado == NO_ACCESIBLE) {
 		estados[s] = NO_ACCESIBLE;
 		noAccesibles.insert(s);
@@ -62,16 +61,12 @@ int dfs(int s, int lastNodo) {
 
 	for (int w : adjList[s]) {
 		
-      // Si desde un nodo no accesible se encuentra con uno accesible desde la orilla (o la orilla)
 		if (estados[s] == NO_ACCESIBLE && estados[w] == ACCESIBLE && s != ID_FRAGIL) {
-
-         // Se suman las moscas de la componente no accesible
 			for (int nA : noAccesibles) {
 				estados[nA] = ACCESIBLE;
-				numMoscas += nenufares[nA].moscas;	
+				numMoscas += nenufares[nA].moscas;
+				
 			}
-
-         // Se reinicia el conjunto
 			noAccesibles = {};
 		}
 
@@ -82,7 +77,7 @@ int dfs(int s, int lastNodo) {
 	return numMoscas;
 }
 
-// Comprueba si la rana puede saltar de un nenúfar a otro
+
 bool ranaAlcanza(double x1, double y1, double x2, double y2, double longMax) {
 	double dist = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	return dist <= longMax;
@@ -99,36 +94,29 @@ void resuelveCaso() {
 	estados.assign(v + 1, NO_VISITADO);
 	nenufares = {};
 	
-	int nodoOrilla = v;  // nodo fantasma que representa la orilla
+	int nodoOrilla = v;
 	
 	estados[nodoOrilla] = ACCESIBLE;
 	noAccesibles = {};
 
 	for (int i = 0; i < v; i++) {
 
-		tNenufar nen;
-		nen.id = i;
-		cin >> nen.x >> nen.y >> nen.moscas;
+		tNenufar n1;
+		n1.id = i;
+		cin >> n1.x >> n1.y >> n1.moscas;
 
 		// el primer nenúfar siempre es el frágil
-		nen.esFragil = i == ID_FRAGIL;
-		nenufares.push_back(nen);
+		n1.esFragil = i == ID_FRAGIL;
+		nenufares.push_back(n1);
 		
-      // Calculamos conexiones con las orillas
-		if (nen.x <= l || n - nen.x <= l || nen.y <= l || m - nen.y <= l) {
-			adjList[nen.id].push_back(nodoOrilla);
-			adjList[nodoOrilla].push_back(nen.id);
+		if (n1.x <= l || n - n1.x <= l || n1.y <= l || m - n1.y <= l) {
+			adjList[n1.id].push_back(nodoOrilla);
+			adjList[nodoOrilla].push_back(n1.id);
 		}
-	}
-	
-	// establecemos conexiones entre los nenúfares
-	for (int i = 0; i < v - 1; i++) {
-
-		tNenufar n1 = nenufares[i];
-	
-		// comprobamos con el resto de nenúfares
-		for (int j = i + 1; j < v; j++) {
-
+		
+		// establecemos conexiones entre los nenúfares
+		for (int j = i - 1; j >= 0; j--) {
+			
 			tNenufar n2 = nenufares[j];
 			
 			if (ranaAlcanza(n1.x, n1.y, n2.x, n2.y, l)) {
@@ -137,6 +125,7 @@ void resuelveCaso() {
 			}
 		}
 	}
+
 	
 	int maxMoscas = dfs(nodoOrilla, -1);
 
