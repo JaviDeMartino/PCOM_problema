@@ -16,7 +16,7 @@
 #include <cstdint>
 using namespace std;
 
-const int EPS = 1e-7;
+const double EPS = 1e-7;
 const int ID_FRAGIL = 0;	// ID del nenúfar frágil
 
 struct tNenufar {
