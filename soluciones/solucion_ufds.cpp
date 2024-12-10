@@ -13,6 +13,7 @@
 #include <cmath>
 using namespace std;
 
+const int EPS = 1e-7;
 const int ID_FRAGIL = 0;    // ID del nenúfar frágil
 
 struct tNenufar {
@@ -64,7 +65,7 @@ struct UFDS {
 
 bool ranaAlcanza(double x1, double y1, double x2, double y2, double longMax) {
 	double dist = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-	return dist <= longMax;
+	return dist <= longMax + EPS;
 }
 
 void resuelveCaso() {
