@@ -60,14 +60,12 @@ int bfs(int s) {
 }
 
 
-
 bool ranaAlcanza(double x1, double y1, double x2, double y2, double longMax) {
 	double dist = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	return dist <= longMax + EPS;
 }
 
 void resuelveCaso() {
-
 
 	double n, m, l;
 	int v;
@@ -109,15 +107,32 @@ void resuelveCaso() {
 	int moscas = bfs(nodoOrilla);
 		
 	cout << moscas << '\n';
-
 }
 
 int main() {
 
-	int numCasos;
-	cin >> numCasos;
-	for (int i = 0; i < numCasos; ++i)
-		resuelveCaso();
+#ifndef DOMJUDGE
+    std::ifstream in("CasoGrande2.1.txt");
+    auto cinbuf = std::cin.rdbuf(in.rdbuf());
+#endif
 
-	return 0;
+    unsigned t0 = clock();
+
+    int num = 0; cin>>num;
+    while (num--){
+        resuelveCaso();
+    }
+
+    unsigned t1 = clock();
+
+    double time = (double(t1-t0)/CLOCKS_PER_SEC);
+
+    cout << "Tiempo de ejecución: "<<time <<" s\n";
+
+#ifndef DOMJUDGE
+    std::cin.rdbuf(cinbuf);
+    system("PAUSE");
+#endif
+
+    return 0;
 }

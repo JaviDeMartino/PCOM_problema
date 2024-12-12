@@ -79,7 +79,8 @@ void resuelveCaso() {
 	int nodoOrilla = v;
 	
 	UFDS uf(v + 1);
-	
+
+
 	for (int i = 0; i < v; i++) {
 
 		tNenufar n1;
@@ -97,10 +98,11 @@ void resuelveCaso() {
 		if (i != ID_FRAGIL)
 			if (n1.x <= l || n - n1.x <= l || n1.y <= l || m - n1.y <= l)
 				uf.merge(n1.id, nodoOrilla);
-		
+
 		for (int j = i - 1; j > 0; j--) {
 			
 			tNenufar n2 = nenufares[j];
+            
 			if (ranaAlcanza(n1.x, n1.y, n2.x, n2.y, l)) {
 				uf.merge(n1.id, n2.id);
 			}
@@ -135,11 +137,29 @@ void resuelveCaso() {
 
 int main() {
 
-	int numCasos;
-	cin >> numCasos;
-	for (int i = 0; i < numCasos; ++i)
-		resuelveCaso();
+#ifndef DOMJUDGE
+    std::ifstream in("CasoGrande2.1.txt");
+    auto cinbuf = std::cin.rdbuf(in.rdbuf());
+#endif
 
-	return 0;
+    unsigned t0 = clock();
+
+    int num = 0; cin>>num;
+    while (num--){
+        resuelveCaso();
+    }
+
+    unsigned t1 = clock();
+
+    double time = (double(t1-t0)/CLOCKS_PER_SEC);
+
+    cout << "Tiempo de ejecución: "<<time <<" s\n";
+
+#ifndef DOMJUDGE
+    std::cin.rdbuf(cinbuf);
+    system("PAUSE");
+#endif
+
+    return 0;
+
 }
-

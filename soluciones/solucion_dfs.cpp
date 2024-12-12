@@ -134,10 +134,29 @@ void resuelveCaso() {
 
 int main() {
 
-	int numCasos;
-	cin >> numCasos;
-	for (int i = 0; i < numCasos; ++i)
-		resuelveCaso();
+#ifndef DOMJUDGE
+    std::ifstream in("CasoGrande2.txt");
+    auto cinbuf = std::cin.rdbuf(in.rdbuf());
+#endif
 
-	return 0;
+	unsigned t0 = clock();
+
+    int num = 0; cin>>num;
+    while (num--){
+        resuelveCaso();
+    }
+
+	unsigned t1 = clock();
+
+    double time = (double(t1-t0)/CLOCKS_PER_SEC);
+
+    cout << "Tiempo de ejecución: "<<time <<" s\n";
+
+#ifndef DOMJUDGE
+    std::cin.rdbuf(cinbuf);
+    system("PAUSE");
+#endif
+
+    return 0;
+
 }
