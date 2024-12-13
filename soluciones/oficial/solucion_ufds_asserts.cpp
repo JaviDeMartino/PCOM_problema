@@ -22,6 +22,12 @@ const double MAX_L = 1500;
 const int MIN_F = 0;
 const int MAX_F = 100000;
 
+// Comprueba que un número solo tiene dos decimales de precisión
+void assertDosDecimales(double v) {
+    double t = floor(v * 100 + 0.5) / 100;
+    assert(fabs(v - t) < 1e-9);
+}
+
 const double EPS = 1e-6;
 const int ID_FRAGIL = 0;    // ID del nenúfar frágil
 
@@ -77,6 +83,7 @@ bool ranaAlcanza(double x1, double y1, double x2, double y2, double longMax) {
 	return dist <= longMax + EPS;
 }
 
+
 void resuelveCaso() {
 
 	double n, m, l;
@@ -87,6 +94,9 @@ void resuelveCaso() {
     assert((m >= MIN_DIM) && (m <= MAX_DIM) && "Límites de anchura del estanque");
     assert((v >= MIN_NEN) && (v <= MAX_NEN) && "Límites en el número de nenúfares");
     assert((v >= MIN_L) && (v <= MAX_L) && "Límites en la longitud de salto de la rana");
+	assertDosDecimales(n);
+	assertDosDecimales(m);
+	assertDosDecimales(l);
 
 	nenufares = {};
 	
@@ -103,6 +113,8 @@ void resuelveCaso() {
         assert((n1.x >= MIN_DIM) && (n1.x <= n - MIN_DIM) && "Coordenada X del nenúfar dentro del estanque");
         assert((n1.y >= MIN_DIM) && (n1.y <= m - MIN_DIM) && "Coordenada Y del nenúfar dentro del estanque");
         assert((n1.moscas >= MIN_F) && (v <= MAX_F) && "Límites en el número de moscas");
+		assertDosDecimales(n1.x);
+		assertDosDecimales(n1.y);
 
 		// el primer nenúfar siempre es el frágil
 		nenufares.push_back(n1);
@@ -154,28 +166,10 @@ void resuelveCaso() {
 
 int main() {
 
-#ifndef DOMJUDGE
-    std::ifstream in("CasoGrande2.1.txt");
-    auto cinbuf = std::cin.rdbuf(in.rdbuf());
-#endif
-
-    unsigned t0 = clock();
-
     int num = 0; cin>>num;
     while (num--){
         resuelveCaso();
     }
-
-    unsigned t1 = clock();
-
-    double time = (double(t1-t0)/CLOCKS_PER_SEC);
-
-    cout << "Tiempo de ejecución: "<<time <<" s\n";
-
-#ifndef DOMJUDGE
-    std::cin.rdbuf(cinbuf);
-    system("PAUSE");
-#endif
 
     return 0;
 
