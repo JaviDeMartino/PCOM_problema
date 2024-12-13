@@ -15,12 +15,22 @@
 #include <set>
 using namespace std;
 
-const double MIN_DIM = 0.01;
+// Desplazamiento mínimo con dos decimales de precisión
+const double MIN_SALTO = 0.01;
+
+// Dimensiones mínimas y máximas del estanque
+const double MIN_DIM = 0.02;
 const double MAX_DIM = 1000.0;
+
+// Número mínimo y máximo de nenúfares
 const int MIN_NEN = 1;
 const int MAX_NEN = 10000;
-const double MIN_L = 0;
-const double MAX_L = 1500;
+
+// Capacidad mínima y máxima de salto de la rana
+const double MIN_L = 0.0;
+const double MAX_L = 1500.0;
+
+// Número mínimo y máximo de moscas en un nenúfar
 const int MIN_F = 0;
 const int MAX_F = 100000;
 
@@ -114,8 +124,8 @@ void resuelveCaso() {
 		n1.id = i;
 		cin >> n1.x >> n1.y >> n1.moscas;
 
-        assert((n1.x >= MIN_DIM) && (n1.x <= n - MIN_DIM) && "Coordenada X del nenúfar dentro del estanque");
-        assert((n1.y >= MIN_DIM) && (n1.y <= m - MIN_DIM) && "Coordenada Y del nenúfar dentro del estanque");
+        assert((n1.x >= MIN_SALTO) && (n1.x <= n - MIN_SALTO) && "Coordenada X del nenúfar dentro del estanque");
+        assert((n1.y >= MIN_SALTO) && (n1.y <= m - MIN_SALTO) && "Coordenada Y del nenúfar dentro del estanque");
         assert((n1.moscas >= MIN_F) && (v <= MAX_F) && "Límites en el número de moscas");
 		assertDosDecimales(n1.x);
 		assertDosDecimales(n1.y);
