@@ -3,7 +3,8 @@
 
 //
 //  LA RANITA Y LOS NENÚFARES
-//  - Solución mediante UFDS
+//  SOLUCIÓN OFICIAL (con asserts)
+//  - Solución mediante UFDS 
 //  
 
 #include <iostream>
@@ -11,6 +12,7 @@
 #include <vector>
 #include <cmath>
 #include <cassert>
+#include <set>
 using namespace std;
 
 const double MIN_DIM = 0.01;
@@ -104,6 +106,8 @@ void resuelveCaso() {
 	
 	UFDS uf(v + 1);
 
+	set<pair<double, double>> posiciones;
+
 	for (int i = 0; i < v; i++) {
 
 		tNenufar n1;
@@ -115,6 +119,8 @@ void resuelveCaso() {
         assert((n1.moscas >= MIN_F) && (v <= MAX_F) && "Límites en el número de moscas");
 		assertDosDecimales(n1.x);
 		assertDosDecimales(n1.y);
+		assert(!posiciones.count({n1.x, n1.y}) && "Dos nenúfares en la misma posición");
+		posiciones.insert({n1.x, n1.y});
 
 		// el primer nenúfar siempre es el frágil
 		nenufares.push_back(n1);
