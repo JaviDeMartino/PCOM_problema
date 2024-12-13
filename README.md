@@ -7,7 +7,7 @@
 - *Antonino Gabriel Sasu*
 - *Javier Martín Fuentes*
 
-En este archivo se recoge toda la documentación para nuestra propuesta de un problema para la asignatura de Programación Competitiva.
+En este archivo se explica toda la documentación aportada para nuestra propuesta de un problema para la asignatura de Programación Competitiva.
 
 # Índice
 
@@ -32,12 +32,66 @@ En este archivo se recoge toda la documentación para nuestra propuesta de un pr
 ## 1. Estructura del directorio
 <hr>
 
+En el siguiente árbol se puede visualizar la estructura de la documentación aportada. Podemos observar que en un primer nivel se encuentra el enunciado del problema (**enunciado.pdf**) y las carpetas de **soluciones** y **casos**.
+
+Por un lado, en la carpeta de **soluciones** se encuentran clasificadas como oficial, correctas e incorrectas las distintas soluciones implementadas. En el nombre de cada fichero .cpp se indica el algoritmo mediante el cual se resuelve el problema en esa solución concreta. Asimismo, para la solución oficial se ha añadido una solución que es exactamente igual pero que incluye *asserts* (**solucion_ufds_asserts**) para comprobar la coherencia y consistencia de los datos de entrada con respecto al enunciado. Para más detalles de cada implementación, ver la sección [Soluciones](#2-soluciones).
+
+Por otro lado, en la carpeta **casos** se definen todos los casos requeridos para nuestro problema. Se clasifican en **aleatorios**, **de_prueba**, **especiales**, **exhaustivos** y **grandes**. Los casos de prueba y especiales se han definido manualmente y, por lo tanto, se trata de ficheros de texto plano. Por el contrario, los casos aleatorios, exhaustivos y grandes se han realizado mediante generadores. Para más detalle, ver la sección [Generación de casos](#3-generación-de-casos). Para cada uno de los generadores, excepto de los grandes, se incluyen ejemplos en miniatura en su respectiva carpeta **ejemplos** para observar cómo son los ficheros de texto resultantes.
+
+
+```
+
+PCOM_07_problema
+   ├─ README.md
+   ├─ casos
+   │  ├─ aleatorios
+   │  │  ├─ ejemplos
+   │  │  │  ├─ caso_aleatorio1.txt
+   │  │  │  ├─ caso_aleatorio2.txt
+   │  │  │  ├─ caso_aleatorio3.txt
+   │  │  │  ├─ caso_aleatorio4.txt
+   │  │  │  └─ caso_aleatorio5.txt
+   │  │  ├─ generador_caso_aleatorio1.cpp
+   │  │  ├─ generador_caso_aleatorio2.cpp
+   │  │  ├─ generador_caso_aleatorio3.cpp
+   │  │  ├─ generador_caso_aleatorio4.cpp
+   │  │  └─ generador_caso_aleatorio5.cpp
+   │  ├─ de_prueba
+   │  │  └─ casos_prueba.txt
+   │  ├─ especiales
+   │  │  └─ casos_especiales.txt
+   │  ├─ exhaustivos
+   │  │  ├─ ejemplos
+   │  │  │  └─ caso_exhaustivo1.txt
+   │  │  └─ generador_caso_exhaustivo1.cpp
+   │  └─ grandes
+   │     ├─ generador_caso_grande1.1.cpp
+   │     ├─ generador_caso_grande1.cpp
+   │     ├─ generador_caso_grande2.1.cpp
+   │     ├─ generador_caso_grande2.cpp
+   │     └─ generador_caso_grande3.cpp
+   ├─ enunciado.pdf
+   └─ soluciones
+      ├─ correctas
+      │  ├─ solucion_bfs.cpp
+      │  ├─ solucion_dfs1.cpp
+      │  └─ solucion_dfs2.cpp
+      ├─ incorrectas
+      │  ├─ solucion_maxflow.cpp
+      │  └─ solucion_vdfs.cpp
+      └─ oficial
+         ├─ solucion_ufds.cpp
+         └─ solucion_ufds_asserts.cpp
+```
+
+
 ## 2. Soluciones
 <hr>
 
 Para todas las soluciones se intepreta el estanque como un **grafo** en el que los nodos son los nenúfares conectados por aristas si la rana llega saltando de uno al otro. Asimismo, se añade un **nodo fantasma** que representa las cuatro orillas del estanque, conectado al resto de nodos por la misma regla.
 
 ### UFDS
+**<code>solucion_ufds.cpp</code>**
 
 Esta solución emplea la estructura de datos Union-Find (UF) modificada para ajustarse al problema. De este modo, se añade un vector *moscas* en el que se va acumulando la suma de moscas de cada componente conexa en el método <code>merge</code>.
 Además, se implementan dos métodos nuevos:
@@ -50,15 +104,18 @@ Así pues, se van añadiendo las conexiones entre los nenúfares en el UF **exce
 Por último, se añaden las conexiones del nodo frágil al UF y se comprueba si su componente conexa coincide con la de la orilla. En tal caso, se suman las moscas del nodo frágil a las moscas obtenidas anteriormente (puesto que la rana puede saltar a este y regresar). De esta forma, evitamos que se sumen las moscas de las componentes conexas en las que la rana quedaría atrapada si accediese a ellas a través del nodo frágil.
 
 ### BFS
+**<code>solucion_bfs.cpp</code>**
 
 Esta es quizá la solución más trivial: se emplea una búsqueda primero en anchura que parte del nodo fantasma de la orilla. A continuación, se suman todas las moscas de los nodos que se van explorando. Si un nodo es el frágil, entonces no se exploran sus conexiones. La idea es que se llegará a esos nodos desde otro camino si realmente son accesibles.
 
 ### DFS I
+**<code>solucion_dfs1.cpp</code>**
 
 Esta solución comparte la misma idea que la anterior (BFS): sumar todas las moscas de los caminos explorados, excepto los hijos del nodo frágil, para los cuales habrá que esperarse a llegar por otro camino para sumarlas. 
 
 
 ### DFS II
+**<code>solucion_dfs2.cpp</code>**
 
 En esta solución se emplea la búsqueda primero en profundidad que parte del nodo fantasma que representa las orillas. Se definen tres estados para los nodos:
 
@@ -71,11 +128,15 @@ A partir de este momento, se van almacenando los nodos no visitados como NO ACCE
 
 Cada vez que se parte de un hijo del nenúfar frágil, se vacía el conjunto de nodos no accesibles, ya que esa componente conexa dejaría atrapada a la rana.
 
+La incluimos porque esta fue nuestra solución inicial aunque es bastante retorcida después de conocer la implementación más sencilla con DFS.
+
 ### DFS MÚLTIPLE
+**<code>solucion_vdfs.cpp</code>**
 
 Se trata de una solución mucho menos inteligente: lanzar un DFS desde cada uno de los nodos y comprobar si se puede llegar a alguna de las orillas sin pasar por el nodo frágil. En tal caso, se suman las moscas de ese nodo al total.
 
 ### MAX-FLOW
+**<code>solucion_maxflow.cpp</code>**
 
 La resolución del problema con max-flow se puede describir del siguiente modo: 
 
@@ -89,6 +150,7 @@ La resolución del problema con max-flow se puede describir del siguiente modo:
 <hr>
 
 ### 2.0 Casos de prueba
+**<code>casos_prueba.txt</code>**
 
 Estos casos **no son para probar la solución** sino para aclarar posibles dudas. Se definen los siguientes:
 
@@ -105,12 +167,14 @@ Estos tres primeros se corresponden con los casos de prueba del enunciado. Los s
 8. La rana no tiene capacidad de salto (también cuenta como caso especial). $sol=0$ 
 
 ### 2.1 Casos exhaustivos
+**<code>generador_caso_exhaustivo1.cpp</code>**
 
 Hemos creado un solo generador para los casos exhaustivos ya que consideramos que no son tan necesarios en nuestro problema concreto.
 
 En este, empezamos generando aleatoriamente los nenufares junto con sus coordenadas y moscas. Luego mantenemos estos valores para todos los casos, en los que iremos modificando solamente el valor de la distancia de salto: empezará desde 0.00 e irá subiendo hasta el límite (1500.00). Dentro del código se explica cómo vamos aumentando el valor del salto.
 
 ### 2.2 Casos especiales
+**<code>casos_especiales.txt</code>**
 
 Se han definido los siguientes casos especiales:
 
@@ -124,25 +188,26 @@ Se han definido los siguientes casos especiales:
 
 Tenemos un total de 5 generadores de casos aleatorios:
 
-1. Crea 5.000 casos. Definimos los limites como los del enunciado (menos el máximo de nenufares que lo bajamos a 1.000) y generamos todos los valores de forma aleatoria (siguiendo una distribución uniforme).
-2. Igual que el primero, pero disminuimos el valor máximo de salto para que sean menos frecuente los grupo grandes de nenúfares conexos.
-3. Como el primero, pero bajamos el número de casos a 500 para así subir el número máximo de nenúfares al indicado en el enunciado (10.000) sin que el archivo de txt quede muy grande.
-4. Crea 5.000 casos y a la vez mantenemos el máximo de nenúfares en 10.000. Generamos los valores igual que el resto.
+1. **<code>generador_caso_aleatorio1.cpp</code>** Crea 5.000 casos. Definimos los limites como los del enunciado (menos el máximo de nenufares que lo bajamos a 1.000) y generamos todos los valores de forma aleatoria (siguiendo una distribución uniforme).
+2. **<code>generador_caso_aleatorio2.cpp</code>** Igual que el primero, pero disminuimos el valor máximo de salto para que sean menos frecuente los grupo grandes de nenúfares conexos.
+3. **<code>generador_caso_aleatorio3.cpp</code>** Como el primero, pero bajamos el número de casos a 500 para así subir el número máximo de nenúfares al indicado en el enunciado (10.000) sin que el archivo de txt quede muy grande.
+4. **<code>generador_caso_aleatorio4.cpp</code>** Crea 5.000 casos y a la vez mantenemos el máximo de nenúfares en 10.000. Generamos los valores igual que el resto.
 *Este archivo tendrá alrededor de 25 millones de lineas*.
-5. Generamos 1.000 casos con rangos más pequeños.
+5. **<code>generador_caso_aleatorio5.cpp</code>** Generamos 1.000 casos con rangos más pequeños.
 
 ### 2.4 Casos grandes
+
 Tenemos 5 generadores diferentes:
 
-- **1 -** Creamos una fila vertical de 10.000 nenúfares conectados que llegan a conectarse por la orilla por ambos extremos. Aquí el nenúfar de abajo del todo es el frágil. Este caso nos sirve para distinguir el UFDS, DFS y BFS de un algoritmo que use un DFS por nenúfar o con otro que use MAX_FLOW.
+- **<code>generador_caso_grande1.1.cpp</code>** Creamos una fila vertical de 10.000 nenúfares conectados que llegan a conectarse por la orilla por ambos extremos. Aquí el nenúfar de abajo del todo es el frágil. Este caso nos sirve para distinguir el UFDS, DFS y BFS de un algoritmo que use un DFS por nenúfar o con otro que use MAX_FLOW.
 
-- **1.1 -** Como el primero, pero el frágil es el de arriba de la fila. Esto se hace por si un algoritmo que se veria perjudicado por pasar primero por un nodo frágil consigue ir primero en el otro caso (el que empieza con el frágil por abajo) por el nodo no frágil. De este modo, nos aseguramos que al menos en uno de los dos pase primero por el frágil.
+- **<code>generador_caso_grande1.cpp</code>** Como el primero, pero el frágil es el de arriba de la fila. Esto se hace por si un algoritmo que se veria perjudicado por pasar primero por un nodo frágil consigue ir primero en el otro caso (el que empieza con el frágil por abajo) por el nodo no frágil. De este modo, nos aseguramos que al menos en uno de los dos pase primero por el frágil.
 
-- **2 -** Tenemos un caso en el que la distancia de salto de la rana es mayor a la requerida para pasar de un extremo del lago a otro, luego todos los nenúfares (10.000) están conectados entre todos (orilla incluída). Con esto conseguimos excluir soluciones que no marquen de alguna manera los nenúfares por los que ya has pasado.
+- **<code>generador_caso_grande2.1.cpp</code>** Tenemos un caso en el que la distancia de salto de la rana es mayor a la requerida para pasar de un extremo del lago a otro, luego todos los nenúfares (10.000) están conectados entre todos (orilla incluída). Con esto conseguimos excluir soluciones que no marquen de alguna manera los nenúfares por los que ya has pasado.
 
-- **2.2 -** En este caso, tenemos 10.000 nenúfares en los que ninguno está conectado entre sí. Aquí son peores los algoritmos que empiezan desde algún nenúfar en vez de desde la orilla la exploración del grafo.
+- **<code>generador_caso_grande2.cpp</code>** En este caso, tenemos 10.000 nenúfares en los que ninguno está conectado entre sí. Aquí son peores los algoritmos que empiezan desde algún nenúfar en vez de desde la orilla la exploración del grafo.
 
-- **3 -** En este vamos a poner la distancia de salto al mínimo (0.01). Creamos una fila desde la orilla izquierda de 2.000 nenúfares conectados con distancia 0.01 entre ellos. Luego abajo de cada nenúfar de la fila colocamos de forma alternada nenufares a distancia 0.01 y 0.02 (estos últimos no están contados en la solución final). Para ampliar el número de nenúfares creamos otra fila igual un poco más abajo. El nenúfar frágil lo colocamos en la esquina inferior derecha apartado porque no nos interesa en este caso. Este caso es simplemente un caso con muchos nenúfares en el que hay que comprobar muchas veces el camino de ida y de vuelta, asi excluímos los que no hacen esto de forma eficiente.
+- **<code>generador_caso_grande3.cpp</code>** En este vamos a poner la distancia de salto al mínimo (0.01). Creamos una fila desde la orilla izquierda de 2.000 nenúfares conectados con distancia 0.01 entre ellos. Luego abajo de cada nenúfar de la fila colocamos de forma alternada nenufares a distancia 0.01 y 0.02 (estos últimos no están contados en la solución final). Para ampliar el número de nenúfares creamos otra fila igual un poco más abajo. El nenúfar frágil lo colocamos en la esquina inferior derecha apartado porque no nos interesa en este caso. Este caso es simplemente un caso con muchos nenúfares en el que hay que comprobar muchas veces el camino de ida y de vuelta, asi excluímos los que no hacen esto de forma eficiente.
 
 ## 3. Clasificación de soluciones
 
@@ -158,7 +223,7 @@ En la siguiente tabla se muestran los tiempos medios de ejecución de cada una d
 | MAX-FLOW  | 55.440s | 29.280s | >>>>     | 1.079s   | 14.517s  | >>>>      | >>>>      |
 
 
-En vista de los valores observados, podemos determinar que claramente la solución más rápida y por lo tanto la que consideraremos como **SOLUCIÓN OFICIAL** es la que emplea la estructura de datos **UF**, la cual tiene un coste cuadrático con respecto a los datos de entrada. 
+En vista de los valores observados, podemos determinar que claramente la solución más rápida y por lo tanto la que consideraremos como **SOLUCIÓN OFICIAL** es la que emplea la estructura de datos **UF**, la cual tiene un coste cuadrático con respecto a los datos de entrada.
 
 Por otro lado, podemos observar que las soluciones mediante **múltiples DFS** y **max-flow** tienen tiempos de ejecución más largos, ya que su coste temporal supera o iguala el coste cuadrático de la lectura de los datos. Por lo tanto, las clasificaremos como **soluciones 'malas' por TLE**. Se puede observar que para **generar TLE** se deben emplear los casos **GRANDE 1** o **GRANDE 2**.
 
