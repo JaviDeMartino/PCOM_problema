@@ -102,6 +102,8 @@ Estos tres primeros se corresponden con los casos de prueba del enunciado. Los s
 5. Las moscas del nenúfar frágil también se contabilizan si este se accede desde algún otro nenúfar que está conectado a la orilla.
 
 ### 2.1 Casos exhaustivos
+Hemos creado un solo generador para los casos exhaustivos.
+En este empezamos generando aleatoriamente los nenufares junto con sus coordenadas y moscas. Luego mantenemos estos valores para todos los casos, en los que iremos modificando solamente el valor de la distancia de salto, empezará desde 0.00 e ira subiendo hasta el limite (1500.00). Dentro del codigo se explica como vamos aumentando el valor del salto.
 
 ### 2.2 Casos especiales
 
@@ -114,8 +116,28 @@ Se han definido los siguientes casos especiales:
 5. La rana no llega al nenúfar interior por precisión decimal. $sol=1$
 
 ### 2.3 Casos aleatorios
+Tenemos un total de 5 generadores de casos aleatorios:
+
+1. Crea $5000$ casos. Definimos los limites como los del enunciado(menos el maximo de nenufares que lo bajamos a $1000$) y generamos todos los valores de forma aleatoria (siguiendo una distribución uniforme).
+2. Igual que el 1 pero disminuimos el valor máximo de salto para que sea menos frecuente los grupo grandes de nenúfares conexos.
+3. Como el 1 pero bajamos el número de casos a 500 para así subir el número máximo de nenúfares al indicado en el enunciado($10000$) sin que el archivo de txt quede muy grande.
+4. Crea $5000$ casos y a la vez mantenemos el máximo de nenúfares en $10000$. Generamos los valores igual que el resto.
+**Este archivo tendrá alrededor de $25$ millones de lineas**.
+5. Generamos 1000 casos con rangos más pequeños.
 
 ### 2.4 Casos grandes
+Tenemos 5 generadores diferentes:
+
+- 1: Creamos una fila vertical de $10000$ nenúfares conectados que llegan a conectarse por la orilla por ambos extremos. Aquí el nenúfar de abajo del todo es el frágil. Este caso nos sirve para distinguir el ufds, dfs y bfs con un algoritmo que use un dfs por nenúfar o con otro que use max_flow.
+
+- 1.1: Como el 1 pero el frágil es el de arriba de la fila. Esto se hace por si un algoritmo que se veria perjudicado por pasar primero por un nodo frágil consigue ir primero en el otro
+caso (el que empieza con el frágil por abajo) por el nodo no frágil. Asi nos aseguramos que al menos en uno de los dos pase primero por el frágil.
+
+- 2: Tenemos un caso en el que la distancia de salto de la rana es mayor a la requerida para pasar de un extremo del lago a otro, luego todos los nenúfares($10000$) están conectados entre todos(orilla incluída). Con esto conseguimos excluir soluciones que no marquen de alguna manera los nenúfares por los que ya has pasado.
+
+- 2.2: En este caso tenemos $10000$ nenúfares en los que ninguno está conectado entre sí. Aquí son peores los algoritmos que empiezan desde algún nenufar en vez de la orilla.
+
+- 3: En este vamos a poner la distancia de salto al minimo (0.01). Creamos una fila desde la orilla izquierda de $2000$ nenúfares conectados con distancia $0.01$ entre ellos. Luego abajo de cada nenúfar de la fila colocamos de forma alternada nenufares a distancia $0.01$ y $0.02$(estos no están contados en la solución final). Para ampliar el número de nenúfares creamos otra fila igual un poco más abajo. El nenúfar frágil lo colocamos en la esquina inferior derecha apartado porque no nos interesa en este caso. Hemos adjuntado una imagen del caso para visualizarlo mejor. Este caso es simplemente un caso con muchos nenúfares en el que hay que comprobar muchas veces el camino de ida y de vuelta, asi exlcuímos los que no hacen esto de forma eficiente.
 
 ## 3. Clasificación de soluciones
 
