@@ -25,7 +25,7 @@ const int MAX_F = 100000;
 // Comprueba que un número solo tiene dos decimales de precisión
 void assertDosDecimales(double v) {
     double t = floor(v * 100 + 0.5) / 100;
-    assert(fabs(v - t) < 1e-9);
+    assert(fabs(v - t) < 1e-9 && "Precisión mayor de dos decimales");
 }
 
 const double EPS = 1e-6;
