@@ -93,7 +93,7 @@ void resuelveCaso() {
 	assert((n >= MIN_DIM) && (n <= MAX_DIM) && "Límites de longitud del estanque");
     assert((m >= MIN_DIM) && (m <= MAX_DIM) && "Límites de anchura del estanque");
     assert((v >= MIN_NEN) && (v <= MAX_NEN) && "Límites en el número de nenúfares");
-    assert((v >= MIN_L) && (v <= MAX_L) && "Límites en la longitud de salto de la rana");
+    assert((l >= MIN_L) && (l <= MAX_L) && "Límites en la longitud de salto de la rana");
 	assertDosDecimales(n);
 	assertDosDecimales(m);
 	assertDosDecimales(l);
