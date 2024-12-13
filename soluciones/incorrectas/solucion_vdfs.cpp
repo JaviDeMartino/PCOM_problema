@@ -3,15 +3,13 @@
 
 //
 //  LA RANITA Y LOS NENÚFARES
-//  - Solución mediante BFS
+//  - Solución mediante DFS (v veces)
 //
 
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <unordered_set>
 #include <cmath>
-#include <queue>
 using namespace std;
 
 const double EPS = 1e-6;
@@ -32,31 +30,27 @@ using vi = vector<int>;
 using vvi = vector<vi>;
 
 vvi adjList;
-unordered_set<int> noAccesibles;
-bool visited[MAX_NENUFARES + 1];
+bool visited[MAX_NENUFARES];
 
-int bfs(int s) {
+bool dfs(int s, int nodoOrilla) {
 	
-	int moscas = 0;
-	queue<int> q;
+	if (s == nodoOrilla) return true;
+	
 	visited[s] = true;
-	q.push(s);
 	
-	while (!q.empty()) {
-		int v = q.front();
-		q.pop();
+	bool alcanzaOrilla = false;
+	
+	for (int w : adjList[s]) {
 		
-		for (int w : adjList[v]) {
-			if (!visited[w]) {
-				visited[w] = true;
-				moscas += nenufares[w].moscas;
-				if (w != ID_FRAGIL)
-					q.push(w);
-			}
-		}
+		// Si es el frágil o ya está visitado
+		if (w == ID_FRAGIL || visited[w]) continue;
+
+		alcanzaOrilla = alcanzaOrilla || dfs(w, nodoOrilla);
+		if (alcanzaOrilla) return true;
+		
 	}
+	return false;
 	
-	return moscas;
 }
 
 
@@ -67,6 +61,7 @@ bool ranaAlcanza(double x1, double y1, double x2, double y2, double longMax) {
 
 void resuelveCaso() {
 
+
 	double n, m, l;
 	int v;
 	cin >> n >> m >> v >> l;
@@ -75,7 +70,6 @@ void resuelveCaso() {
 	nenufares = {};
 	
 	int nodoOrilla = v;
-	noAccesibles = {};
 
 	for (int i = 0; i < v; i++) {
 
@@ -103,36 +97,26 @@ void resuelveCaso() {
 		}
 	}
 	
-	memset(visited, false, sizeof(visited));
-	int moscas = bfs(nodoOrilla);
+	int moscas = 0;
+	for (int i = 0; i < v; i++) {
+		
+		memset(visited, false, sizeof(visited));
+		bool orillaAlcanzable = dfs(i, nodoOrilla);
+		if (orillaAlcanzable)
+			moscas += nenufares[i].moscas;
+	
+	}
 		
 	cout << moscas << '\n';
+
 }
 
 int main() {
 
-#ifndef DOMJUDGE
-    std::ifstream in("CasoGrande2.1.txt");
-    auto cinbuf = std::cin.rdbuf(in.rdbuf());
-#endif
+	int numCasos;
+	cin >> numCasos;
+	for (int i = 0; i < numCasos; ++i)
+		resuelveCaso();
 
-    unsigned t0 = clock();
-
-    int num = 0; cin>>num;
-    while (num--){
-        resuelveCaso();
-    }
-
-    unsigned t1 = clock();
-
-    double time = (double(t1-t0)/CLOCKS_PER_SEC);
-
-    cout << "Tiempo de ejecución: "<<time <<" s\n";
-
-#ifndef DOMJUDGE
-    std::cin.rdbuf(cinbuf);
-    system("PAUSE");
-#endif
-
-    return 0;
+	return 0;
 }

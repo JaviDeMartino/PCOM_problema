@@ -9,7 +9,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <unordered_set>
 #include <cmath>
 #include <cstring>
 #include <queue>
@@ -118,7 +117,6 @@ void resuelveCaso() {
 	
 	int nodoOrilla = v;			// representa las 4 orillas del estanque
 	int nodoOrigen = v + 1;		// nodo fantasma origen
-
 
 	for (int i = 0; i < v; i++) {
 
