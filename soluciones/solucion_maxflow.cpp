@@ -16,7 +16,7 @@
 #include <cstdint>
 using namespace std;
 
-const double EPS = 1e-7;
+const double EPS = 1e-6;
 const int ID_FRAGIL = 0;	// ID del nenúfar frágil
 
 struct tNenufar {
@@ -142,7 +142,7 @@ void resuelveCaso() {
 			adj[n1.id].push_back(nodoOrilla);
 			adj[nodoOrilla].push_back(n1.id);
 			
-			// la capacidad es infinita entre los distintos nenúfares
+			// la capacidad es infinita entre los distintos nenúfares y la orilla
 			cap[n1.id][nodoOrilla] = INF;
 		}
 		

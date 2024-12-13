@@ -13,7 +13,7 @@
 #include <cmath>
 using namespace std;
 
-const double EPS = 1e-7;
+const double EPS = 1e-6;
 const int ID_FRAGIL = 0;	// ID del nenúfar frágil
 
 struct tNenufar {
@@ -38,7 +38,7 @@ unordered_set<int> noAccesibles;
 int dfs(int s, int lastNodo) {
 	
 	int numMoscas = 0;
-	tEstado lastEstado = estados[lastNodo];
+	tEstado lastEstado = lastNodo != -1 ? estados[lastNodo] : ACCESIBLE;
 	
 	if (s == ID_FRAGIL) {
 		estados[s] = NO_ACCESIBLE;

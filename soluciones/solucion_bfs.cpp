@@ -14,7 +14,7 @@
 #include <queue>
 using namespace std;
 
-const double EPS = 1e-7;
+const double EPS = 1e-6;
 const int MAX_NENUFARES = 1e4;
 const int ID_FRAGIL = 0;	// ID del nenúfar frágil
 
