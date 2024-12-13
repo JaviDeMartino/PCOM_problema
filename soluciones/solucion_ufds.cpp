@@ -80,7 +80,6 @@ void resuelveCaso() {
 	
 	UFDS uf(v + 1);
 
-
 	for (int i = 0; i < v; i++) {
 
 		tNenufar n1;
@@ -96,7 +95,7 @@ void resuelveCaso() {
 		// EXCEPTO CON EL FRÁGIL
 		
 		if (i != ID_FRAGIL)
-			if (n1.x <= l || n - n1.x <= l || n1.y <= l || m - n1.y <= l)
+			if (n1.x <= l + EPS || n - n1.x <= l + EPS || n1.y <= l + EPS || m - n1.y <= l + EPS)
 				uf.merge(n1.id, nodoOrilla);
 
 		for (int j = i - 1; j > 0; j--) {
@@ -116,7 +115,7 @@ void resuelveCaso() {
 	
 	tNenufar nF = nenufares[ID_FRAGIL];
 
-	if (nF.x <= l || n - nF.x <= l || nF.y <= l || m - nF.y <= l)
+	if (nF.x <= l + EPS || n - nF.x <= l + EPS || nF.y <= l + EPS || m - nF.y <= l + EPS)
 		uf.merge(nF.id, nodoOrilla);
 	
 	for (int i = 1; i < v; i++) {

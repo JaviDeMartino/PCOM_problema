@@ -137,7 +137,7 @@ void resuelveCaso() {
 		cap[nodoOrigen][n1.id] = n1.moscas;
 		
 		// conectamos con las orillas
-		if (n1.x <= l || n - n1.x <= l || n1.y <= l || m - n1.y <= l) {
+		if (n1.x <= l + EPS || n - n1.x <= l + EPS || n1.y <= l + EPS || m - n1.y <= l + EPS) {
 			
 			adj[n1.id].push_back(nodoOrilla);
 			adj[nodoOrilla].push_back(n1.id);
