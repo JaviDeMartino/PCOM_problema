@@ -142,7 +142,7 @@ Tenemos 5 generadores diferentes:
 
 - **2.2 -** En este caso, tenemos 10.000 nenúfares en los que ninguno está conectado entre sí. Aquí son peores los algoritmos que empiezan desde algún nenúfar en vez de desde la orilla la exploración del grafo.
 
-- **3 -** En este vamos a poner la distancia de salto al mínimo (0.01). Creamos una fila desde la orilla izquierda de 2.000 nenúfares conectados con distancia 0.01 entre ellos. Luego abajo de cada nenúfar de la fila colocamos de forma alternada nenufares a distancia 0.01 y 0.02 (estos últimos no están contados en la solución final). Para ampliar el número de nenúfares creamos otra fila igual un poco más abajo. El nenúfar frágil lo colocamos en la esquina inferior derecha apartado porque no nos interesa en este caso. Hemos adjuntado una imagen del caso para visualizarlo mejor. Este caso es simplemente un caso con muchos nenúfares en el que hay que comprobar muchas veces el camino de ida y de vuelta, asi excluímos los que no hacen esto de forma eficiente.
+- **3 -** En este vamos a poner la distancia de salto al mínimo (0.01). Creamos una fila desde la orilla izquierda de 2.000 nenúfares conectados con distancia 0.01 entre ellos. Luego abajo de cada nenúfar de la fila colocamos de forma alternada nenufares a distancia 0.01 y 0.02 (estos últimos no están contados en la solución final). Para ampliar el número de nenúfares creamos otra fila igual un poco más abajo. El nenúfar frágil lo colocamos en la esquina inferior derecha apartado porque no nos interesa en este caso. Este caso es simplemente un caso con muchos nenúfares en el que hay que comprobar muchas veces el camino de ida y de vuelta, asi excluímos los que no hacen esto de forma eficiente.
 
 ## 3. Clasificación de soluciones
 
@@ -160,6 +160,6 @@ En la siguiente tabla se muestran los tiempos medios de ejecución de cada una d
 
 En vista de los valores observados, podemos determinar que claramente la solución más rápida y por lo tanto la que consideraremos como **SOLUCIÓN OFICIAL** es la que emplea la estructura de datos **UF**, la cual tiene un coste cuadrático con respecto a los datos de entrada. 
 
-Por otro lado, podemos observar que las soluciones mediante **múltiples DFS** y **max-flow** tienen tiempos de ejecución más largos, ya que su coste temporal supera el cuadrático. Por lo tanto, las clasificaremos como **soluciones 'malas' por TLE**. Se puede observar que para **generar TLE** se deben emplear los casos **GRANDE 1** o **GRANDE 2**.
+Por otro lado, podemos observar que las soluciones mediante **múltiples DFS** y **max-flow** tienen tiempos de ejecución más largos, ya que su coste temporal supera o iguala el coste cuadrático de la lectura de los datos. Por lo tanto, las clasificaremos como **soluciones 'malas' por TLE**. Se puede observar que para **generar TLE** se deben emplear los casos **GRANDE 1** o **GRANDE 2**.
 
 Por último, depende de cuánto queramos ajustar el TLE podemos aceptar las soluciones **BFS, DFS I y DFS II** como válidas o no. En nuestro caso, hemos decidido marcarlas como **soluciones válidas alternativas**, ya que además también se ajustan al coste en tiempo cuadrático. Sin embargo, otra interpretación más exigente podría llegar a descartar estas soluciones ya que la oficial es bastante más eficiente, lo cual es un punto de vista razonable también.

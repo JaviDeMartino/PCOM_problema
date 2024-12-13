@@ -1,6 +1,11 @@
 // JAVIER MARTÍN FUENTES - ANTONINO SASU
 // jmarti32@ucm.es - antosasu@ucm.es
 
+//
+//  LA RANITA Y LOS NENÚFARES
+//  - Generador de casos aleatorios 4
+//
+
 #include <iostream>
 #include <fstream>
 #include <string>
