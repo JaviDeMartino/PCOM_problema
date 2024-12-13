@@ -3,7 +3,7 @@
 
 //
 //  LA RANITA Y LOS NENÚFARES
-//  - Solución mediante DFS
+//  - Solución mediante DFS (2)
 //  
 
 #include <iostream>

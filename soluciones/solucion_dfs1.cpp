@@ -3,16 +3,15 @@
 
 //
 //  LA RANITA Y LOS NENÚFARES
-//  - Solución mediante BFS
+//  - Solución mediante DFS (1)
 //
 
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <unordered_set>
 #include <cmath>
-#include <queue>
 using namespace std;
+
 
 const double EPS = 1e-7;
 const int MAX_NENUFARES = 1e4;
@@ -32,27 +31,16 @@ using vi = vector<int>;
 using vvi = vector<vi>;
 
 vvi adjList;
-unordered_set<int> noAccesibles;
 bool visited[MAX_NENUFARES + 1];
 
-int bfs(int s) {
+int dfs(int v, int orilla) {
 	
-	int moscas = 0;
-	queue<int> q;
-	visited[s] = true;
-	q.push(s);
+	int moscas = (v == orilla) ? 0 : nenufares[v].moscas;
+	visited[v] = true;
 	
-	while (!q.empty()) {
-		int v = q.front();
-		q.pop();
-		
+	if (v != ID_FRAGIL) {
 		for (int w : adjList[v]) {
-			if (!visited[w]) {
-				visited[w] = true;
-				moscas += nenufares[w].moscas;
-				if (w != ID_FRAGIL)
-					q.push(w);
-			}
+			if (!visited[w]) moscas += dfs(w, orilla);
 		}
 	}
 	
@@ -67,15 +55,16 @@ bool ranaAlcanza(double x1, double y1, double x2, double y2, double longMax) {
 
 void resuelveCaso() {
 
+
 	double n, m, l;
 	int v;
 	cin >> n >> m >> v >> l;
 
 	adjList.assign(v + 1, {});
+	memset(visited, false, sizeof(visited));
 	nenufares = {};
 	
 	int nodoOrilla = v;
-	noAccesibles = {};
 
 	for (int i = 0; i < v; i++) {
 
@@ -102,37 +91,21 @@ void resuelveCaso() {
 			}
 		}
 	}
+
 	
-	memset(visited, false, sizeof(visited));
-	int moscas = bfs(nodoOrilla);
-		
-	cout << moscas << '\n';
+	int maxMoscas = dfs(nodoOrilla, nodoOrilla);
+
+	cout << maxMoscas << '\n';
+
 }
 
 int main() {
 
-#ifndef DOMJUDGE
-    std::ifstream in("CasoGrande2.1.txt");
-    auto cinbuf = std::cin.rdbuf(in.rdbuf());
-#endif
+	int num = 0; cin>>num;
+	while (num--){
+		resuelveCaso();
+	}
 
-    unsigned t0 = clock();
+	return 0;
 
-    int num = 0; cin>>num;
-    while (num--){
-        resuelveCaso();
-    }
-
-    unsigned t1 = clock();
-
-    double time = (double(t1-t0)/CLOCKS_PER_SEC);
-
-    cout << "Tiempo de ejecución: "<<time <<" s\n";
-
-#ifndef DOMJUDGE
-    std::cin.rdbuf(cinbuf);
-    system("PAUSE");
-#endif
-
-    return 0;
 }
