@@ -33,6 +33,7 @@ using vvi = vector<vi>;
 vvi adjList;
 bool visited[MAX_NENUFARES + 1];
 
+// Devuelve el número máximo de moscas que la rana puede cazar sin mojarse
 int bfs(int s) {
 	
 	int moscas = 0;
@@ -45,9 +46,12 @@ int bfs(int s) {
 		q.pop();
 		
 		for (int w : adjList[v]) {
+
 			if (!visited[w]) {
 				visited[w] = true;
 				moscas += nenufares[w].moscas;
+
+				// Si el nodo adyacente no es el frágil lo añadimos a la cola para sumar sus moscas
 				if (w != ID_FRAGIL)
 					q.push(w);
 			}
@@ -57,7 +61,7 @@ int bfs(int s) {
 	return moscas;
 }
 
-
+// Comprueba si la rana llega saltando de unas coordenadas a otras
 bool ranaAlcanza(double x1, double y1, double x2, double y2, double longMax) {
 	double dist = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	return dist <= longMax + EPS;
@@ -101,6 +105,8 @@ void resuelveCaso() {
 	}
 	
 	memset(visited, false, sizeof(visited));
+
+	// Partimos del nodo fantasma de la orilla
 	int moscas = bfs(nodoOrilla);
 		
 	cout << moscas << '\n';

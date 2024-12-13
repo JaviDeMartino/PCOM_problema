@@ -22,7 +22,6 @@ struct tNenufar {
 	int moscas;
 };
 
-
 using vN = vector<tNenufar>;
 vN nenufares;
 
@@ -32,6 +31,8 @@ using vvi = vector<vi>;
 vvi adjList;
 bool visited[MAX_NENUFARES];
 
+
+// Devuelve true si hay un camino firme desde un nenúfar dado hasta la orilla
 bool dfs(int s, int nodoOrilla) {
 	
 	if (s == nodoOrilla) return true;
@@ -53,7 +54,7 @@ bool dfs(int s, int nodoOrilla) {
 	
 }
 
-
+// Comprueba si la rana llega saltando de unas coordenadas a otras
 bool ranaAlcanza(double x1, double y1, double x2, double y2, double longMax) {
 	double dist = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	return dist <= longMax + EPS;
@@ -98,10 +99,12 @@ void resuelveCaso() {
 	}
 	
 	int moscas = 0;
+	// Recorremos todos los nenúfares
 	for (int i = 0; i < v; i++) {
 		
 		memset(visited, false, sizeof(visited));
 		bool orillaAlcanzable = dfs(i, nodoOrilla);
+		// Si hay un camino a la orilla se suman las moscas
 		if (orillaAlcanzable)
 			moscas += nenufares[i].moscas;
 	

@@ -23,6 +23,9 @@ struct tNenufar {
 };
 
 // estados de los nenúfares en la búsqueda
+// ACCESIBLE - Existe un camino firme desde la orilla hasta el nodo
+// NO ACCESIBLE - No se ha encontrado aún un camino firme desde la orilla hasta el nodo
+// NO VISITADO - El nodo todavía no ha sido visitado
 typedef enum { ACCESIBLE, NO_ACCESIBLE, NO_VISITADO } tEstado;
 
 using vN = vector<tNenufar>;
@@ -35,25 +38,31 @@ vvi adjList;
 vector<tEstado> estados;
 unordered_set<int> noAccesibles;
 
+// Devuelve el número de moscas que puede comerse la rana sin mojarse
 int dfs(int s, int lastNodo) {
 	
 	int numMoscas = 0;
+	// Obtenemos el estado del último nodo visitado
 	tEstado lastEstado = lastNodo != -1 ? estados[lastNodo] : ACCESIBLE;
 	
+	// Si nos encontramos en el nodo frágil, se marca como NO ACCESIBLE y se suman las moscas
 	if (s == ID_FRAGIL) {
 		estados[s] = NO_ACCESIBLE;
 		numMoscas += nenufares[s].moscas;
 	}
+	// Si se trata de un hijo del nodo frágil, reseteamos el conjunto de no accesibles
 	else if (lastNodo == ID_FRAGIL) {
 		noAccesibles = {};
 		estados[s] = NO_ACCESIBLE;
 		noAccesibles.insert(s);
 	}
+	// Si el último estado es accesible, se marca este nodo también como accesible y se suman las moscas
 	else if (lastEstado == ACCESIBLE) {
 		estados[s] = ACCESIBLE;
 		if (lastNodo != -1)
 			numMoscas += nenufares[s].moscas;
 	}
+	// Si el último nodo era no accesible se marca el nodo actual también como no accesible
 	else if (lastEstado == NO_ACCESIBLE) {
 		estados[s] = NO_ACCESIBLE;
 		noAccesibles.insert(s);
@@ -61,11 +70,11 @@ int dfs(int s, int lastNodo) {
 
 	for (int w : adjList[s]) {
 		
+		// Si el nodo actual es no accesible (menos el frágil) y el hijo sí lo es, todos los no accesibles se actualizan y cuentan las moscas
 		if (estados[s] == NO_ACCESIBLE && estados[w] == ACCESIBLE && s != ID_FRAGIL) {
 			for (int nA : noAccesibles) {
 				estados[nA] = ACCESIBLE;
 				numMoscas += nenufares[nA].moscas;
-				
 			}
 			noAccesibles = {};
 		}
@@ -77,7 +86,7 @@ int dfs(int s, int lastNodo) {
 	return numMoscas;
 }
 
-
+// Comprueba si la rana llega saltando de unas coordenadas a otras
 bool ranaAlcanza(double x1, double y1, double x2, double y2, double longMax) {
 	double dist = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	return dist <= longMax + EPS;

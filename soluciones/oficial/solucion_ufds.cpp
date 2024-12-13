@@ -61,7 +61,7 @@ struct UFDS {
 	}
 };
 
-
+// Comprueba si la rana llega saltando de unas coordenadas a otras
 bool ranaAlcanza(double x1, double y1, double x2, double y2, double longMax) {
 	double dist = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	return dist <= longMax + EPS;
